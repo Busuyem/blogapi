@@ -135,24 +135,9 @@ Query params for `/api/posts`:
 
 ## 🧪 Testing
 
-* Import the included **Postman/Insomnia collection** (`docs/BlogAPI.postman_collection.json`)
+* Import the included **Postman** (`docs/BlogAPI.postman_collection.json`)
 * Test endpoints for authentication, CRUD, search, and pagination
 
 ---
 
-## 📖 Notes
 
-* If `APP_DEBUG=true`, Laravel may expose stack traces.
-  In production, set `APP_DEBUG=false` in `.env`.
-* JWT errors (expired, invalid, missing token) return clean JSON like:
-
-  ```json
-  { "message": "Token not provided" }
-  ```
-
----
-
-## 👨‍💻 Author
-
-Developed by **\[Your Name]** ✨
-For technical assessment/demo purposes.
