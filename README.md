@@ -1,61 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📝 Mini Blog API (Laravel 12 + JWT)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a **Blog API** built with **Laravel 12**, using the **Repository Pattern** and **JWT Authentication**.
+It allows users to register, log in, manage their own posts, and view public posts.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* **Authentication**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+  * User registration & login with JWT
+  * Token refresh & logout
+  * `GET /api/user/me` to fetch the logged-in user
 
-## Learning Laravel
+* **Blog Posts**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+  * Authenticated users can create, update, delete, and view their own posts
+  * Public can view list of posts and a single post
+  * Search posts by title/body
+  * Pagination supported
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* **Code Quality**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+  * Repository pattern with interfaces
+  * Error handling with try/catch and clean JSON responses
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## ⚙️ Tech Stack
 
-### Premium Partners
+* **PHP 8.2+**
+* **Laravel 12**
+* **MySQL** (can be adapted for PostgreSQL)
+* **JWT Auth** (tymon/jwt-auth)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 📂 Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# clone repo
+git clone https://github.com/your-username/blogapi.git
+cd blogapi
 
-## Code of Conduct
+# install dependencies
+composer install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# copy env and configure database
+cp .env.example .env
 
-## Security Vulnerabilities
+# generate app key & jwt secret
+php artisan key:generate
+php artisan jwt:secret
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# run migrations
+php artisan migrate
 
-## License
+# start server
+php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🔑 Authentication
+
+Use JWT tokens in the `Authorization` header:
+
+```
+Authorization: Bearer <your_token_here>
+```
+
+---
+
+## 📡 API Endpoints
+
+### 🔐 Auth
+
+| Method | Endpoint        | Description               |
+| ------ | --------------- | ------------------------- |
+| POST   | `/api/register` | Register new user         |
+| POST   | `/api/login`    | Login & receive token     |
+| GET    | `/api/user/me`  | Get authenticated user    |
+| POST   | `/api/logout`   | Logout (invalidate token) |
+
+---
+
+### 📖 Posts
+
+#### Public
+
+| Method | Endpoint          | Description                                   |
+| ------ | ----------------- | --------------------------------------------- |
+| GET    | `/api/posts`      | List all posts (supports search + pagination) |
+| GET    | `/api/posts/{id}` | View a single post                            |
+
+Query params for `/api/posts`:
+
+* `q=keyword` → search title/body
+* `per_page=10` → results per page
+* `page=2` → pagination page
+
+#### Authenticated (requires `jwt.auth`)
+
+| Method    | Endpoint          | Description              |
+| --------- | ----------------- | ------------------------ |
+| POST      | `/api/posts`      | Create a post            |
+| GET       | `/api/posts/{id}` | View **your own** post   |
+| PUT/PATCH | `/api/posts/{id}` | Update **your own** post |
+| DELETE    | `/api/posts/{id}` | Delete **your own** post |
+| GET       | `/api/user/posts` | List posts owned by user |
+
+---
+
+## 🗄️ Database Schema
+
+### Users
+
+* id
+* name
+* email
+* password (hashed)
+* timestamps
+
+### Posts
+
+* id
+* title
+* body
+* user\_id (foreign key → users)
+* created\_at
+* updated\_at
+
+---
+
+## 🧪 Testing
+
+* Import the included **Postman/Insomnia collection** (`docs/BlogAPI.postman_collection.json`)
+* Test endpoints for authentication, CRUD, search, and pagination
+
+---
+
+## 📖 Notes
+
+* If `APP_DEBUG=true`, Laravel may expose stack traces.
+  In production, set `APP_DEBUG=false` in `.env`.
+* JWT errors (expired, invalid, missing token) return clean JSON like:
+
+  ```json
+  { "message": "Token not provided" }
+  ```
+
+---
+
+## 👨‍💻 Author
+
+Developed by **\[Your Name]** ✨
+For technical assessment/demo purposes.
