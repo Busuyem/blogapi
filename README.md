@@ -135,7 +135,7 @@ Query params for `/api/posts`:
 
 ## 🧪 Testing
 
-* Import the included **Postman** (`docs/BlogAPI.postman_collection.json`)
+* Import the included **Postman** (`doc/blogapi.postman_collection.json`)
 * Test endpoints for authentication, CRUD, search, and pagination
 
 ---
