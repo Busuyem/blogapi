@@ -40,7 +40,7 @@ It allows users to register, log in, manage their own posts, and view public pos
 
 ```bash
 # clone repo
-git clone https://github.com/your-username/blogapi.git
+git clone https://github.com/busuyem/blogapi.git
 cd blogapi
 
 # install dependencies
